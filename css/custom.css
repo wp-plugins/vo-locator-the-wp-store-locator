@@ -1,0 +1,144 @@
+@charset "utf-8";
+/* CSS Document */
+.form-control{ margin:0px !important; }
+#zipcodelookup h2{ margin:0px; margin-bottom:5px; }
+#zipcodelookup, #maplist{ margin:0px !important; margin-bottom:15px !important; }
+h4{ font-size:16px; }
+#maplist{ margin-top:20px; }
+#maplist .col-lg-3 .locationlist.row {
+    border-bottom: 1px solid #cccccc;
+    padding-left: 10px;
+}
+#maplist .col-lg-3 .locationdetails{ display:none; }
+.locationdetails .mainrow, .locationdetails .imagerow{ margin:0px; }
+.locationdetails .mainrow .row{  margin: 0 0 0 -10px;
+    padding: 0; }
+#maplist .col-lg-3 {
+    border: 1px solid #999999;
+}
+#maplist .col-lg-3 .locationlist p{ padding-right:5px; }
+#maplist .col-lg-3 .locationlist span{ float:right; font-size:12px; margin-top:5px;margin-bottom:5px;margin-right:5px; }
+#retailFinder .col-lg-8 img{ display:none; }
+
+#maplist .col-lg-3 .row:hover{ background:#CDCED3; }
+.overflowscroll{ max-height:350px; overflow:scroll; min-height:350px; }
+#details_placeholder .row div{ min-height:25px; }
+#details_placeholder .mainrow, #details_placeholder .imagerow{ padding-left:20px; border-left:10px solid #000000; }
+#details_placeholder .locationlist{ display:none; }
+#maplist .col-lg-3 .locationlist.active{ background:#CDCED3; }
+#details_placeholder .imagerow{ padding-bottom:10px; }
+.imagerow{ padding-bottom:10px; }
+#maplist .col-lg-3 .locationdetails{ margin-bottom:10px; }
+#map_placeholder{
+ height: 350px;
+ width: 800px;
+}
+
+.et_marker_info, .et_marker_info_jobsite, .et_marker_info_zoom{ display:none; font-size:12px; }
+.et_marker_info, .et_marker_info_jobsite, .et_marker_info_zoom {
+    background: none repeat scroll 0 0 #FFFFFF;
+    bottom: 15px !important;
+    display: none;
+    opacity: 0;
+    position: absolute;
+    z-index: 3;
+}
+.location-description { background: url(../images/location-description-bg.png); width: 240px; text-align: center; -webkit-box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1); box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1); width: 400px; }
+		.location-title { -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1); -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1); box-shadow: inset 0 3px 20px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.3); border-bottom: none; }
+			.location-title h2 { font-size: 22px; color: #2a2a2a; text-shadow: 1px 1px 0 #fff; border-bottom: 1px solid #e6f4fb; padding: 19px 35px; }
+			.listing-info { margin-bottom: -6px; padding: 5px 0 5px 0; padding-left:5px; text-align:left; }
+		.location-rating { position: relative; }
+.location-rating:before { content: ''; position: absolute; bottom: -26px; left: 50%; border: 10px solid transparent; margin-left: -8px; border-top-color: #F4F4F4; }
+.listing-info p{ padding-bottom:0px; margin-bottom:3px; line-height:20px; padding-right:10px; }
+.listing-info h4{ margin-top:0px; }
+.listing-info h4 a{ margin-right:10px; }
+#load_more_list{ margin:10px 0; font-weight:bold; text-align:left; font-size:18px; cursor:pointer; font-family:inherit; }
+.col-lg-7 img{ width:16px; }
+.col-md-3.col-sm-3 strong img {
+    width: 16px;
+}
+
+/*Updated today*/
+.col-lg-3 a{ text-decoration:underline; }
+.mainrow .col-md-1, .mainrow .col-sm-1{ width:5%; }
+.locationdetails .mainrow .row{ margin-bottom:5px; }
+#maplist .locationlist{ padding:0 25px 0 25px !important; cursor:pointer; }
+.location-description img{ padding:0px !important; display:inline !important; }
+/**/
+
+/***************Media Queries********************/
+@media screen and (max-width: 1028px) {
+#map_placeholder {
+    height: 350px;
+    width: 570px;
+}
+#maplist .col-lg-9{ float:left; width:65%; }
+#maplist .col-lg-3{ float:left; width:35%; }
+
+}
+
+@media screen and (max-width: 1024px) {
+
+.mainrow .col-md-1, .mainrow .col-sm-1{ width:auto; }
+.listing-info .col-lg-5{ width:23%; float:left; }
+.listing-info .col-lg-5 .img_placeholder img{ width:100%; }
+.listing-info .col-lg-7{ width:75%; float:left; }
+.listing-info .col-lg-7 h4:first-child{ width:92% !important; }
+
+}
+
+@media screen and (max-width: 768px) {
+#map_placeholder {
+    height: 350px;
+    width: 420px;
+}
+#maplist .col-lg-9{ float:left; width:65%; }
+#maplist .col-lg-3{ float:left; width:35%; }
+.listing-info .col-lg-5{ width:23%; float:left; }
+.listing-info .col-lg-5 .img_placeholder img{ width:100%; }
+.listing-info .col-lg-7{ width:75%; float:left; }
+.listing-info .col-lg-7 h4:first-child{ width:92% !important; }
+}
+
+@media screen and (max-width: 640px) {
+ #maplist .col-lg-3{ width:100%; }
+   #map_placeholder{ display:none; }
+   
+    .locationdetails .col-md-3{ width:10%; float:left; }
+	.locationdetails .col-md-9{ width:85%; float:left; padding-left:0px; }
+	.locationdetails .imagerow{ margin-bottom:10px; }
+	
+	.mainrow .col-md-1, .mainrow .col-sm-1 {    float: left;    width: 11%;	}
+	.mainrow .col-md-10, .mainrow .col-sm-10 {    float: left;    width: 88%;	}
+	
+}
+
+@media screen and (max-width: 480px) {
+   #maplist .col-lg-3{ width:100%; }
+   #map_placeholder{ display:none; }
+   .locationdetails .col-md-3{ width:11%; float:left; }
+	.locationdetails .col-md-9{ width:85%; float:left; padding-left:0px; }
+	.locationdetails .imagerow{ margin-bottom:10px; }
+	.mainrow .col-md-1, .mainrow .col-sm-1 {    float: left;    width: 11%;	}
+	.mainrow .col-md-10, .mainrow .col-sm-10 {    float: left;    width: 88%;	}
+}
+
+@media screen and (max-width: 360px) {
+ #maplist .col-lg-3{ width:100%; }
+   #map_placeholder{ display:none; }
+   
+   .locationdetails .col-md-3{ width:17%; float:left; }
+	.locationdetails .col-md-9{ width:80%; float:left; padding-left:0px; }
+	.locationdetails .imagerow{ margin-bottom:10px; }
+	
+	.mainrow .col-md-1, .mainrow .col-sm-1 {    float: left;    width: 20%;	}
+	.mainrow .col-md-10, .mainrow .col-sm-10 {    float: left;    width: 78%; padding-left:0px;	}
+}
+
+@media screen and (max-width: 320px) {
+	#maplist .col-lg-3{ width:100%; }
+	#map_placeholder{ display:none; }
+	.locationdetails .col-md-3{ width:17%; float:left; }
+	.locationdetails .col-md-9{ width:80%; float:left; padding-left:0px; }
+}
+/***************Media Queries********************/

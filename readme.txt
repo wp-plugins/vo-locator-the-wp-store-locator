@@ -19,7 +19,6 @@ VO Locator is simple location management plugin to power your wordpress website 
 * Customize store listing/map listing appearance according to the website theme.
 * Auto location look-up based on where user is currently located.
 * Auto locate co-ordinates, only need to enter address of the desired place/store.
-* Ability to modify the Listing Field Labels.
 * Embed listings/maps on page and posts easily using shortcode [VO-LOCATOR].
 * Ability to add turn-by-turn driving directions to the location.
 * Add thumbnail to the specific location/store.

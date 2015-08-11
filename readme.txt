@@ -76,7 +76,7 @@ Or One can even use the line of code mentioned below instead of the above functi
 } )`
 *Or One can even use the line of code mentioned below instead of the above function `<?php echo do_shortcode( '[VO-LOCATOR]' ); ?>`
 
-== Change Log ==
+== changelog ==
 = 1.0.1 =
 * Bug Fixs: A bug fixed where user can't activate the plugin due to a fatal error.
 

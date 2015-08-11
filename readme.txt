@@ -29,11 +29,6 @@ VO Locator is simple location management plugin to power your wordpress website 
 * Easily turn Map display On/Off.
 * Ability to hide address from pubic/users for your special cases where you need to only show closest contact phone and other details.
 
-
-== Change Log ==
-= 1.0.1 =
-* Bug Fixs: A bug fixed where user can't activate the plugin due to a fatal error.
-
 = Using shortcode in theme template files =
 
 In any case if you need to add listing within theme template files, add this line of code to your theme template:
@@ -81,5 +76,7 @@ Or One can even use the line of code mentioned below instead of the above functi
 } )`
 *Or One can even use the line of code mentioned below instead of the above function `<?php echo do_shortcode( '[VO-LOCATOR]' ); ?>`
 
-
+== Change Log ==
+= 1.0.1 =
+* Bug Fixs: A bug fixed where user can't activate the plugin due to a fatal error.
 

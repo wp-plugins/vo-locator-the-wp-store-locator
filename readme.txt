@@ -3,7 +3,7 @@ Contributors: Jurski
 Tags: business locations, store locator, mapping,google maps, locator, shop locator, class locator, events locators, jobs locators, shop finder, shortcode, location finder, places, zipcode locator, stores, plugin, maps, coordinates, latitude, longitude, posts, best google maps, geocoding, shops, page, zipcode, zip code, zip code search, custom google maps, store finder, address map, google map, address location map, map maker, proximity search, map creator, gmaps, mapping software, google map plugin, map tools, google maps, zip code locator, mapping tools, locator maps, map of addresses, map multiple locations, wordpress locator, zipcode search, store locator map
 Requires at least: 3.3
 Tested up to: 4.2.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Simple wordpress store locator plugin to manage multiple business locations and other any places using Google Maps
 

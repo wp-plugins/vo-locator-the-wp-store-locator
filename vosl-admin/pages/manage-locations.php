@@ -65,7 +65,8 @@ if (function_exists("do_sl_hook")) {do_sl_hook("sl_where_clause_filter");} // 4/
 	/*$numMembers=$wpdb->get_results("SELECT id FROM ".VOSL_TABLE." $where");
 	$numMembers2=count($numMembers); */
 	$start=(empty($_GET['start']))? 0 : $_GET['start'];
-	$num_per_page=$sl_vars['admin_locations_per_page']; //edit this to determine how many locations to view per page of 'Manage Locations' page
+	$num_per_page = 100;
+	//$num_per_page=$sl_vars['admin_locations_per_page']; //edit this to determine how many locations to view per page of 'Manage Locations' page
 	/*if ($numMembers2!=0) {include(VOSL_INCLUDES_PATH."/search-links.php");}*/
 //end of for search links
 
@@ -98,7 +99,7 @@ if (function_exists("do_sl_hook") && !empty($sl_columns)){
 <a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=state&d=$d'>".__("State", VOSL_TEXT_DOMAIN)."</a>{$th_co}
 <a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=zip&d=$d'>".__("Zip", VOSL_TEXT_DOMAIN)."</a></th>";
 
-	if ($sl_vars['location_table_view']!="Normal") {
+	if ($vosl_vars['location_table_view']!="Normal") {
 		print "<th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=description&d=$d'>".__("Description", VOSL_TEXT_DOMAIN)."</a></th>
 <th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=url&d=$d'>".__("URL", VOSL_TEXT_DOMAIN)."</a></th>
 
@@ -118,9 +119,9 @@ print "<th>(Lat, Lon)</th>
 		if (function_exists("do_sl_hook") && !empty($sl_columns)){
 			# +4 : Represents the 5 db fields (organized in 4 columns) that aren't dynamically placed on location table (Checkbox, Actions, ID, 'Lat, Lon' <-1 column), but need to be part of the column count
 			# -3 : Represents the 3 db fields (ID, 'Lat, Lon') that are part of normal columns, but aren't dynamically placed on location table
-			$colspan=($sl_vars['location_table_view']!="Normal")? 	(count($sl_columns)-count($sl_omitted_columns)+4) : (count($sl_normal_columns)-3+4);
+			$colspan=($vosl_vars['location_table_view']!="Normal")? 	(count($sl_columns)-count($sl_omitted_columns)+4) : (count($sl_normal_columns)-3+4);
 		} else {
-			$colspan=($sl_vars['location_table_view']!="Normal")? 	18 : 11;
+			$colspan=($vosl_vars['location_table_view']!="Normal")? 	18 : 11;
 		}
 		
 		$bgcol="";
@@ -171,7 +172,7 @@ $value[city]{$tco_state}
 $value[state]{$tco_zip}
 $value[zip]</td>";
 
-					if ($sl_vars['location_table_view']!="Normal") {
+					if ($vosl_vars['location_table_view']!="Normal") {
 						print "<td>$value[description]</td>
 <td>$value[url]</td>
 <td>$value[phone]</td>

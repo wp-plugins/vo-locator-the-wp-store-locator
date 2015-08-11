@@ -40,7 +40,7 @@ function vosl_data($setting_name, $i_u_d_s="select", $setting_value="") {
 if (!function_exists("vosl_template")){
    function vosl_template($content) {
 
-	global $vosl_dir, $vosl_base, $vosl_path, $votext_domain, $wpdb, $sl_vars, $vosl_inc_dir, $form;
+	global $vosl_dir, $vosl_base, $vosl_path, $votext_domain, $wpdb, $vosl_vars, $vosl_inc_dir, $form;
 	if(! preg_match('|\[vo-locator|i', $content)) {
 		return $content;
 	}
@@ -55,12 +55,12 @@ add_shortcode( 'VO-LOCATOR', 'volocator_func' );
 
 function volocator_func()
 {
-	global $vosl_dir, $vosl_base, $vosl_uploads_base, $vosl_path, $votext_domain, $wpdb, $sl_vars, $vosl_inc_dir, $form;
+	global $vosl_dir, $vosl_base, $vosl_uploads_base, $vosl_path, $votext_domain, $wpdb, $vosl_vars, $vosl_inc_dir, $form;
 	include($vosl_path."/vosl-inc/includes/locations.php");	
 	return $form;
 }
 
-function sl_menu_pages_filter($sl_menu_pages) {
+function vosl_menu_pages_filter($sl_menu_pages) {
 	/*if (function_exists('do_sl_hook')){do_sl_hook('sl_menu_pages_filter', '', array(&$sl_menu_pages));}*/
 	
 	foreach ($sl_menu_pages as $menu_type => $value) {
@@ -77,7 +77,7 @@ function sl_menu_pages_filter($sl_menu_pages) {
 
 /*-----------------------------------*/
 function vosl_add_options_page() {
-	global $vosl_dir, $vosl_base, $votext_domain, $vosl_top_nav_links, $sl_vars, $vosl_version;
+	global $vosl_dir, $vosl_base, $votext_domain, $vosl_top_nav_links, $vosl_vars, $vosl_version;
 	$parent_url = VOSL_PARENT_URL; //SL_PAGES_DIR.'/information.php';
 	$warning_count = 0;
 	$warning_title = __("Update(s) currently available for VO Locator", VOSL_TEXT_DOMAIN) . ":";
@@ -260,7 +260,7 @@ function vosl_add_location() {
 
 /*----------------------------------------------------*/
 function vosl_single_location_info($value, $colspan, $bgcol) {
-	global $sl_hooks;
+	//global $sl_hooks;
 	$_GET['edit'] = $value['id']; //die("edit: ".var_dump($_GET)); die();
 	
 	print "<tr style='background-color:$bgcol' id='sl_tr_data-$value[id]'>";
@@ -281,10 +281,6 @@ function vosl_single_location_info($value, $colspan, $bgcol) {
 		</td></tr>
 		<tr><td style='padding-left:0px' class='nobottom'><input name='show_address_publicly-$value[id]' $show_directions id='show_address_publicly-$value[id]' value='1' type='checkbox'>&nbsp;<small>".__("Share Address Publicly", VOSL_TEXT_DOMAIN)."</small></td></tr></table>";
 		
-		if (function_exists("do_sl_hook")) {
-			sl_show_custom_fields();
-		}
-		
 		$cancel_onclick = "location.href=\"".str_replace("&edit=$_GET[edit]", "",$_SERVER['REQUEST_URI'])."\"";
 		
 		$show_directions = '';
@@ -301,7 +297,7 @@ function vosl_single_location_info($value, $colspan, $bgcol) {
 		<input id='upload_image' name='image-$value[id]' id='image-$value[id]' value='$value[image]' size='19' type='text'>&nbsp;<small>".__("Image URL (shown with location)", VOSL_TEXT_DOMAIN)."</small>&nbsp;<input type='button' value='Image upload' class='button' id='upload_image_button' /><br /><input name='hours-$value[id]' id='hours-$value[id]'  type='text' value='$value[hours]' size='19'>&nbsp;<small>".__("Hours", VOSL_TEXT_DOMAIN)."</small>";
 		
 		print "</td><td style='vertical-align:top !important; width:40%'>";
-	if (function_exists("do_sl_hook")) {do_sl_hook("sl_single_location_edit", "select-top");}
+	
 	print "</td></tr>
 	</table>
 </form>
@@ -331,24 +327,13 @@ print "</tr>";
 if (!function_exists("vosl_do_geocoding")){
  function vosl_do_geocoding($address, $sl_id="") {
    if (empty($_POST['no_geocode']) || $_POST['no_geocode']!=1){
-	global $wpdb, $text_domain, $sl_vars;
+	global $wpdb, $text_domain;
 
 	// Initialize delay in geocode speed
-	$delay = 100000; $ccTLD=$sl_vars['map_region']; $sensor=$sl_vars['sensor'];
+	$delay = 100000;
 	$base_url = "https://maps.googleapis.com/maps/api/geocode/json?";
 
 	if ($sensor!="" && !empty($sensor) && ($sensor === "true" || $sensor === "false" )) {$base_url .= "sensor=".$sensor;} else {$base_url .= "sensor=false";}
-
-	//Adding ccTLD (Top Level Domain) to help perform more accurate geocoding according to selected Google Maps Domain - 12/16/09
-	if ($ccTLD!="") {
-		$base_url .= "&region=".$ccTLD;
-		//die($base_url);
-	}
-
-	//Map Character Encoding
-	if (!empty($sl_vars['map_language'])) {
-		$base_url .= "&language=".$sl_vars['map_language'];
-	}
 
 	// Iterate through the rows, geocoding each address
 		$request_url = $base_url . "&address=" . urlencode(trim($address)); //print($request_url );
@@ -465,11 +450,11 @@ function vosl_admin_toolbar($admin_bar){
 } 
 
 /*-----------------------------------------------*/
-### Loading SL Variables ###
-$sl_vars=vosl_data('sl_vars');
+### Loading VOSL Variables ###
+$vosl_vars=vosl_data('sl_vars');
 
-if (!is_array($sl_vars)) {
-	//print($sl_vars."<br><br>");
+if (!is_array($vosl_vars)) {
+	//print($vosl_vars."<br><br>");
 	function vosl_fix_corrupted_serialized_string($string) {
 		$tmp = explode(':"', $string);
 		$length = count($tmp);
@@ -483,10 +468,10 @@ if (!is_array($sl_vars)) {
     		}
     		return join(':"', $tmp);
 	}
-	$sl_vars = vosl_fix_corrupted_serialized_string($sl_vars); //die($sl_vars);
-	vosl_data('sl_vars', 'update', $sl_vars);
-	$sl_vars = unserialize($sl_vars); //var_dump($sl_vars);
-	//die($sl_vars);
+	$vosl_vars = vosl_fix_corrupted_serialized_string($vosl_vars); //die($vosl_vars);
+	vosl_data('vosl_vars', 'update', $vosl_vars);
+	$vosl_vars = unserialize($vosl_vars); //var_dump($vosl_vars);
+	//die($vosl_vars);
 }
 
 function vo_wp_gear_manager_admin_scripts() {

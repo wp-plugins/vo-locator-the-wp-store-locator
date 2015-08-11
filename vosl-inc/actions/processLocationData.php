@@ -52,13 +52,13 @@ if ( !is_user_logged_in() ) {
 	}
 	
 	if (!empty($_GET['changeView']) && $_GET['changeView']==1) {
-		if ($sl_vars['location_table_view']=="Normal") {
-			$sl_vars['location_table_view']='Expanded';
-			vosl_data('sl_vars', 'update', $sl_vars);
+		if ($vosl_vars['location_table_view']=="Normal") {
+			$vosl_vars['location_table_view']='Expanded';
+			vosl_data('sl_vars', 'update', $vosl_vars);
 			//$tabViewText="Expanded";
 		} else {
-			$sl_vars['location_table_view']='Normal';
-			vosl_data('sl_vars', 'update', $sl_vars);
+			$vosl_vars['location_table_view']='Normal';
+			vosl_data('vosl_vars', 'update', $vosl_vars);
 			//$tabViewText="Normal";
 		}
 		print "<script>location.replace('".str_replace("&changeView=1", "", $_SERVER['REQUEST_URI'])."');</script>";

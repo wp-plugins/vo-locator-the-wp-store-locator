@@ -55,8 +55,6 @@ define('VOSL_ADMIN_NAV_BASE', $admin_nav_base);
 define('VOSL_TEXT_DOMAIN', $text_domain);
 define('VOSL_VIEW_LINK', $view_link);
 define('VOSL_WEB_DOMAIN', $web_domain);
-//define('VOSL_IMAGES_BASE', VOSL_UPLOADS_BASE."/images");
-//define('VOSL_IMAGES_PATH', VOSL_UPLOADS_PATH."/images");
 define('VOSL_INFORMATION_PAGE', VOSL_TOP_NAV_BASE.VOSL_PAGES_DIR."/information.php");
 define('VOSL_MANAGE_LOCATIONS_PAGE', VOSL_TOP_NAV_BASE.VOSL_PAGES_DIR."/locations.php");
 define('VOSL_ADD_LOCATIONS_PAGE', VOSL_MANAGE_LOCATIONS_PAGE."&pg=add-locations");

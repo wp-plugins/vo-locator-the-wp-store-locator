@@ -56,17 +56,14 @@ print "</td><td>";
 //establishes WHERE clause in query from URL querystring
 //sl_set_query_defaults();
 
-if (function_exists("do_sl_hook")) {do_sl_hook("sl_where_clause_filter");} // 4/20/15, 12:15a - v3.50 - needed here to actually filter WHERE clause displaying locations on Locations > Manage page. Should've been here since v2.0
-
-//$sl_vars['admin_locations_per_page'] = 10;
+$vosl_vars['admin_locations_per_page'] = 100;
 
 //for search links
 	$where = '';
 	/*$numMembers=$wpdb->get_results("SELECT id FROM ".VOSL_TABLE." $where");
 	$numMembers2=count($numMembers); */
 	$start=(empty($_GET['start']))? 0 : $_GET['start'];
-	$num_per_page = 100;
-	//$num_per_page=$sl_vars['admin_locations_per_page']; //edit this to determine how many locations to view per page of 'Manage Locations' page
+	$num_per_page=$vosl_vars['admin_locations_per_page']; //edit this to determine how many locations to view per page of 'Manage Locations' page
 	/*if ($numMembers2!=0) {include(VOSL_INCLUDES_PATH."/search-links.php");}*/
 //end of for search links
 
@@ -85,30 +82,29 @@ print "<table class='widefat' cellspacing=0 id='loc_table'>
 <th colspan='1'>".__("Actions", VOSL_TEXT_DOMAIN)."</th>
 <th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=id&d=$d'>".__("ID", VOSL_TEXT_DOMAIN)."</a></th>";
 
-if (function_exists("do_sl_hook") && !empty($sl_columns)){
-	do_sl_location_table_header();
-} else {
-	//th_co = th_close_open
-	$th_co = ($is_normal_view)? "</th>\n<th>" : ", " ;
-	$th_style = ($is_normal_view)? "" : "style='white-space: nowrap;' " ;
-	
-	print "<th {$th_style}><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=store_name&d=$d'>".__("Name", VOSL_TEXT_DOMAIN)."</a>{$th_co}
+$vosl_vars['location_table_view'] = 'Normal';
+
+//th_co = th_close_open
+$th_co = ($is_normal_view)? "</th>\n<th>" : ", " ;
+$th_style = ($is_normal_view)? "" : "style='white-space: nowrap;' " ;
+
+print "<th {$th_style}><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=store_name&d=$d'>".__("Name", VOSL_TEXT_DOMAIN)."</a>{$th_co}
 <a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=address&d=$d'>".__("Street", VOSL_TEXT_DOMAIN)."</a>{$th_co}
 <a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=address2&d=$d'>".__("Street2", VOSL_TEXT_DOMAIN)."</a>{$th_co}
 <a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=city&d=$d'>".__("City", VOSL_TEXT_DOMAIN)."</a>{$th_co}
 <a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=state&d=$d'>".__("State", VOSL_TEXT_DOMAIN)."</a>{$th_co}
 <a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=zip&d=$d'>".__("Zip", VOSL_TEXT_DOMAIN)."</a></th>";
 
-	if ($vosl_vars['location_table_view']!="Normal") {
-		print "<th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=description&d=$d'>".__("Description", VOSL_TEXT_DOMAIN)."</a></th>
+if ($vosl_vars['location_table_view']!="Normal") {
+	print "<th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=description&d=$d'>".__("Description", VOSL_TEXT_DOMAIN)."</a></th>
 <th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=url&d=$d'>".__("URL", VOSL_TEXT_DOMAIN)."</a></th>
 
 <th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=phone&d=$d'>".__("Phone", VOSL_TEXT_DOMAIN)."</a></th>
 <th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=fax&d=$d'>".__("Fax", VOSL_TEXT_DOMAIN)."</a></th>
 <th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=email&d=$d'>".__("Email", VOSL_TEXT_DOMAIN)."</a></th>
 <th><a href='".str_replace("&o=$_GET[o]&d=$_GET[d]", "", $_SERVER['REQUEST_URI'])."&o=image&d=$d'>".__("Image", VOSL_TEXT_DOMAIN)."</a></th>";
-	}
 }
+
 
 print "<th>(Lat, Lon)</th>
 </tr></thead>";
@@ -116,13 +112,7 @@ print "<th>(Lat, Lon)</th>
 	$o=esc_sql($o); $d=esc_sql($d); 
 	$start=esc_sql($start); $num_per_page=esc_sql($num_per_page); 
 	if ($locales=$wpdb->get_results("SELECT * FROM ".VOSL_TABLE." ORDER BY $o $d LIMIT $start, $num_per_page", ARRAY_A)) { 
-		if (function_exists("do_sl_hook") && !empty($sl_columns)){
-			# +4 : Represents the 5 db fields (organized in 4 columns) that aren't dynamically placed on location table (Checkbox, Actions, ID, 'Lat, Lon' <-1 column), but need to be part of the column count
-			# -3 : Represents the 3 db fields (ID, 'Lat, Lon') that are part of normal columns, but aren't dynamically placed on location table
-			$colspan=($vosl_vars['location_table_view']!="Normal")? 	(count($sl_columns)-count($sl_omitted_columns)+4) : (count($sl_normal_columns)-3+4);
-		} else {
-			$colspan=($vosl_vars['location_table_view']!="Normal")? 	18 : 11;
-		}
+		$colspan=($vosl_vars['location_table_view']!="Normal")? 18 : 11;
 		
 		$bgcol="";
 		
@@ -148,39 +138,38 @@ print "<th>(Lat, Lon)</th>
 			<td><a class='edit_loc_link' href='".$edit_link." id='$value[id]'>".__("Edit", VOSL_TEXT_DOMAIN)."</a>&nbsp;|&nbsp;<a class='del_loc_link' href='".wp_nonce_url("$_SERVER[REQUEST_URI]&delete=$value[id]", "delete-location_".$value['id'])."' onclick=\"confirmClick('Sure?', this.href); return false;\" id='$value[id]'>".__("Delete", VOSL_TEXT_DOMAIN)."</a></td>
 			<td> $value[id] </td>";
 
-				if (function_exists("do_sl_hook") && !empty($sl_columns)){
-					do_sl_location_table_body($value);
+				
+				if ($is_normal_view) {
+					//tco = td_close_open
+					$tco_address = $tco_address2 = $tco_city = $tco_state = $tco_zip = "</td>\n<td>";
+					$strong_addr_open = $strong_addr_close = "";
 				} else {
-					if ($is_normal_view) {
-						//tco = td_close_open
-						$tco_address = $tco_address2 = $tco_city = $tco_state = $tco_zip = "</td>\n<td>";
-						$strong_addr_open = $strong_addr_close = "";
-					} else {
-						$tco_address = (!empty($value['address']) && !empty($value['store']))? "<br>" : "" ;
-						$tco_address2 = (!empty($value['address2']))? ", " : "" ; 
-						$tco_address2 = (empty($value['address']) && !empty($value['address2']))? "<br>" : $tco_address2 ;
-						$tco_city = (!empty($value['city']) || !empty($value['state']) || !empty($value['zip']))? "<br>" : "" ;
-						$tco_state = (!empty($value['city']))? ", " : "" ;
-						$tco_zip = (!empty($value['zip']))? " " : "" ;
-						$strong_addr_open = "<strong>"; $strong_addr_close = "</strong>";
-					}
-					
-					print "<td> $value[store_name]{$tco_address}
+					$tco_address = (!empty($value['address']) && !empty($value['store']))? "<br>" : "" ;
+					$tco_address2 = (!empty($value['address2']))? ", " : "" ; 
+					$tco_address2 = (empty($value['address']) && !empty($value['address2']))? "<br>" : $tco_address2 ;
+					$tco_city = (!empty($value['city']) || !empty($value['state']) || !empty($value['zip']))? "<br>" : "" ;
+					$tco_state = (!empty($value['city']))? ", " : "" ;
+					$tco_zip = (!empty($value['zip']))? " " : "" ;
+					$strong_addr_open = "<strong>"; $strong_addr_close = "</strong>";
+				}
+				
+				print "<td> $value[store_name]{$tco_address}
 $value[address]{$tco_address2}
 $value[address2]{$tco_city}
 $value[city]{$tco_state}
 $value[state]{$tco_zip}
 $value[zip]</td>";
 
-					if ($vosl_vars['location_table_view']!="Normal") {
-						print "<td>$value[description]</td>
+				if ($vosl_vars['location_table_view']!="Normal") {
+					print "<td>$value[description]</td>
 <td>$value[url]</td>
 <td>$value[phone]</td>
 <td>$value[fax]</td>
 <td>$value[email]</td>
 <td>$value[image]</td>";
-					}
 				}
+			
+				
 				print "<td title='(".$value['latitude'].", ".$value['longitude'].")' style='cursor:help;'>(".round($value['latitude'],2).", ".round($value['longitude'],2).")</td></tr>";
 			}
 		}
@@ -193,7 +182,9 @@ $value[zip]</td>";
 	<br />";
 	if(empty($_GET['edit']))
 	{
-		print "<input type='button' value='".__("Add Listing", VOSL_TEXT_DOMAIN)."' class='button-primary' onclick=\"location.href='admin.php?page=vo-locator/vosl-admin/pages/locations.php&pg=add-locations'\">";
+		//echo VOSL_ADD_LOCATIONS_PAGE;
+		//die;
+		print "<input type='button' value='".__("Add Listing", VOSL_TEXT_DOMAIN)."' class='button-primary' onclick=\"location.href='".VOSL_ADD_LOCATIONS_PAGE."'\">";
 		print "&nbsp;&nbsp;<input type='button' value='".__("Delete Selected Listings", VOSL_TEXT_DOMAIN)."' class='button-primary' onclick=\"deleteAllListings();\">";
 		
 	}

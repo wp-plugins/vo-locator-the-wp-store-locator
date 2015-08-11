@@ -54,7 +54,7 @@ if ( !is_user_logged_in() ) {
 	if (!empty($_GET['changeView']) && $_GET['changeView']==1) {
 		if ($vosl_vars['location_table_view']=="Normal") {
 			$vosl_vars['location_table_view']='Expanded';
-			vosl_data('sl_vars', 'update', $vosl_vars);
+			vosl_data('vosl_vars', 'update', $vosl_vars);
 			//$tabViewText="Expanded";
 		} else {
 			$vosl_vars['location_table_view']='Normal';
@@ -63,16 +63,4 @@ if ( !is_user_logged_in() ) {
 		}
 		print "<script>location.replace('".str_replace("&changeView=1", "", $_SERVER['REQUEST_URI'])."');</script>";
 	}
-	if (!empty($_GET['changeUpdater']) && $_GET['changeUpdater']==1) {
-		if (vosl_data('sl_location_updater_type')=="Tagging") {
-			vosl_data('sl_location_updater_type', 'update', 'Multiple Fields');
-			//$updaterTypeText="Multiple Fields";
-		} else {
-			vosl_data('sl_location_updater_type', 'update', 'Tagging');
-			//$updaterTypeText="Tagging";
-		}
-		$_SERVER['REQUEST_URI']=str_replace("&changeUpdater=1", "", $_SERVER['REQUEST_URI']);
-		print "<script>location.replace('$_SERVER[REQUEST_URI]');</script>";
-	}
-	
 ?>

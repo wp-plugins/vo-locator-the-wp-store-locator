@@ -131,5 +131,6 @@ echo volocator_func();<br />
 <p>Or else you can do as follows:</p><strong>
 <p>echo do_shortcode( '[VO-LOCATOR]' ); </p></strong>
 <p>For more information please visit our website: <a href="http://www.vitalorganizer.com/vo-locator-wordpress-store-locator-plugin/" target="_blank">Click Here</a>&nbsp;|&nbsp;<a href="http://www.vitalorganizer.com/vo-locator-documentation/" target="_blank">Documentation</a>&nbsp;|&nbsp;<a href="http://www.vitalorganizer.com/vo-locator-documentation/" target="_blank">Win VO Locator PRO</a></p>
+<p><a href="https://wordpress.org/support/plugin/vo-locator-the-wp-store-locator">Ask for Support</a><a href="https://wordpress.org/support/view/plugin-reviews/vo-locator-the-wp-store-locator">Review Us</a></p>
 </div>
 </div>

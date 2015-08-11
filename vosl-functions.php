@@ -1,7 +1,4 @@
 <?php
-
-
-
 /*-----------------------------------------------------------*/
 function vosl_data($setting_name, $i_u_d_s="select", $setting_value="") {
 	global $wpdb;
@@ -27,11 +24,7 @@ function vosl_data($setting_name, $i_u_d_s="select", $setting_value="") {
 		$q = $wpdb->prepare("SELECT setting_value FROM ".VOSL_SETTING_TABLE." WHERE setting_name = %s", $setting_name);
 		$r = $wpdb->get_var($q);
 		$r = (@unserialize($r) !== false || $r === 'b:0;')? unserialize($r) : $r;  //checking if stored in serialized form
-		/*if (function_exists("apply_filters")) {
-			return apply_filters( 'option_' . $setting_name, $r);  //Compability for WPML or any plugin that uses option_(option_name) hooks
-		} else {*/
-			return $r;
-		//}
+		return $r;
 	}
 }
 /*----------------------------------------------------------------*/
@@ -60,21 +53,6 @@ function volocator_func()
 	return $form;
 }
 
-function vosl_menu_pages_filter($sl_menu_pages) {
-	/*if (function_exists('do_sl_hook')){do_sl_hook('sl_menu_pages_filter', '', array(&$sl_menu_pages));}*/
-	
-	foreach ($sl_menu_pages as $menu_type => $value) {
-		if ($menu_type == 'main') {
-			add_menu_page ($value['title'], $value['title'], $value['capability'], $value['page_url'], '', $value['icon'], $value['menu_position']);
-		}
-		if ($menu_type == 'sub'){
-			foreach ($value as $sub_value) {
-				 add_submenu_page($sub_value['parent_url'], $sub_value['title'], $sub_value['title'], $sub_value['capability'], $sub_value['page_url']);
-			}
-		}
-	}
-}
-
 /*-----------------------------------*/
 function vosl_add_options_page() {
 	global $vosl_dir, $vosl_base, $votext_domain, $vosl_top_nav_links, $vosl_vars, $vosl_version;
@@ -84,10 +62,9 @@ function vosl_add_options_page() {
 	
 	$notify = ($warning_count > 0)?  " <span class='update-plugins count-$warning_count' title='$warning_title'><span class='update-count'>" . $warning_count . "</span></span>" : "" ;
 	
-	add_menu_page( "VO Locator", "VO Locator", "administrator", VOSL_PAGES_DIR.'/locations.php', '', VOSL_BASE.'/images/logo.ico.png', 47 );
+	add_menu_page( "VO Locator", "VO Locator", "administrator", VOSL_PAGES_DIR.'/locations.php', '', VOSL_BASE.'/images/logo.ico.png');
 	add_submenu_page( VOSL_PAGES_DIR.'/locations.php', 'Listings', 'Listings', 'administrator', VOSL_PAGES_DIR.'/locations.php', '');
 	add_submenu_page( VOSL_PAGES_DIR.'/locations.php', 'Settings', 'Settings', 'administrator', VOSL_PAGES_DIR.'/settings.php', '');
-	//sl_menu_pages_filter($sl_menu_pages);
 }
 
 /*----------------------------*/
@@ -206,7 +183,7 @@ function vosl_location_form($mode="add", $pre_html="", $post_html=""){
 		<input id='upload_image' type='text' name='image'>&nbsp;<small>".__("Image URL (shown with location)", VOSL_TEXT_DOMAIN)."</small>&nbsp;<input type='button' value='Image upload' id='upload_image_button' class='button' /><br>
 		<input name='hours' type='text'>&nbsp;<small>".__("Hours", VOSL_TEXT_DOMAIN)."</small>";
 		
-		$html.=(function_exists("do_sl_hook"))? do_sl_hook("vosl_add_location_fields",  "append-return") : "" ;
+		$html.=(function_exists("do_vosl_hook"))? do_vosl_hook("vosl_add_location_fields",  "append-return") : "" ;
 		$html.=wp_nonce_field("add-location_single", "_wpnonce", true, false);
 		$html.="<br><br>
 	<input type='submit' value='".__("Add Listing", VOSL_TEXT_DOMAIN)."' class='button-primary'>
@@ -260,7 +237,7 @@ function vosl_add_location() {
 
 /*----------------------------------------------------*/
 function vosl_single_location_info($value, $colspan, $bgcol) {
-	//global $sl_hooks;
+	global $vosl_hooks;
 	$_GET['edit'] = $value['id']; //die("edit: ".var_dump($_GET)); die();
 	
 	print "<tr style='background-color:$bgcol' id='sl_tr_data-$value[id]'>";
@@ -297,7 +274,7 @@ function vosl_single_location_info($value, $colspan, $bgcol) {
 		<input id='upload_image' name='image-$value[id]' id='image-$value[id]' value='$value[image]' size='19' type='text'>&nbsp;<small>".__("Image URL (shown with location)", VOSL_TEXT_DOMAIN)."</small>&nbsp;<input type='button' value='Image upload' class='button' id='upload_image_button' /><br /><input name='hours-$value[id]' id='hours-$value[id]'  type='text' value='$value[hours]' size='19'>&nbsp;<small>".__("Hours", VOSL_TEXT_DOMAIN)."</small>";
 		
 		print "</td><td style='vertical-align:top !important; width:40%'>";
-	
+	if (function_exists("do_vosl_hook")) {do_vosl_hook("sl_single_location_edit", "select-top");}
 	print "</td></tr>
 	</table>
 </form>
@@ -327,10 +304,10 @@ print "</tr>";
 if (!function_exists("vosl_do_geocoding")){
  function vosl_do_geocoding($address, $sl_id="") {
    if (empty($_POST['no_geocode']) || $_POST['no_geocode']!=1){
-	global $wpdb, $text_domain;
+	global $wpdb, $text_domain, $vosl_vars;
 
 	// Initialize delay in geocode speed
-	$delay = 100000;
+	$delay = 100000; 
 	$base_url = "https://maps.googleapis.com/maps/api/geocode/json?";
 
 	if ($sensor!="" && !empty($sensor) && ($sensor === "true" || $sensor === "false" )) {$base_url .= "sensor=".$sensor;} else {$base_url .= "sensor=false";}
@@ -407,21 +384,20 @@ function vosl_define_db_tables() {
 	//since it can't use sl_data() in the sl-define.php, placed here
 	//$sl_db_prefix = get_option('sl_db_prefix'); 
 	global $wpdb; 
-	$sl_db_prefix = $wpdb->prefix; //better this way, in case prefix changes vs storing option - 1/29/15
-	if (!defined('VOSL_DB_PREFIX')){ define('VOSL_DB_PREFIX', $sl_db_prefix); }
-	if (!empty($sl_db_prefix)) {
+	$vosl_db_prefix = $wpdb->prefix; //better this way, in case prefix changes vs storing option - 1/29/15
+	if (!defined('VOSL_DB_PREFIX')){ define('VOSL_DB_PREFIX', $vosl_db_prefix); }
+	if (!empty($vosl_db_prefix)) {
 		if (!defined('VOSL_TABLE')){ define('VOSL_TABLE', VOSL_DB_PREFIX."vostore_locator"); }
 		if (!defined('VOSL_SETTING_TABLE')){ define('VOSL_SETTING_TABLE', VOSL_DB_PREFIX."vosl_setting"); }
 	}
 }
 vosl_define_db_tables(); 
 /*-----------------------------------------------*/
-add_action('admin_bar_menu', 'vosl_admin_toolbar', 183);
+//add_action('admin_bar_menu', 'vosl_admin_toolbar', 184);
 function vosl_admin_toolbar($admin_bar){
 	
-	
-	$sl_admin_toolbar_array[] = array(
-		'id'    => 'sl-menu',
+	$vosl_admin_toolbar_array[] = array(
+		'id'    => 'vosl-menu',
 		'title' => __('VO Locator', VOSL_TEXT_DOMAIN),
 		'href'  => preg_replace('@wp-admin\/[^\.]+\.php|index\.php@', 'wp-admin/admin.php', VOSL_INFORMATION_PAGE),	
 		'meta'  => array(
@@ -429,29 +405,27 @@ function vosl_admin_toolbar($admin_bar){
 		),
 	);
 
-	$sl_admin_toolbar_array[] = array(
-		'id'    => 'sl-menu-locations',
-		'parent' => 'sl-menu',
+	$vosl_admin_toolbar_array[] = array(
+		'id'    => 'vosl-menu-locations',
+		'parent' => 'vosl-menu',
 		'title' => __('Locations', VOSL_TEXT_DOMAIN),
 		'href'  => preg_replace('@wp-admin\/[^\.]+\.php|index\.php@', 'wp-admin/admin.php', VOSL_MANAGE_LOCATIONS_PAGE),
 		'meta'  => array(
 			'title' => __('Locations', VOSL_TEXT_DOMAIN),
 			'target' => '_self',
-			'class' => 'sl_menu_class'
+			'class' => 'vosl_menu_class'
 		),
 	);
 	
-	if (function_exists('do_sl_hook')){ do_sl_hook('sl_admin_toolbar_filter', '', array(&$sl_admin_toolbar_array)); }
-	
-	foreach ($sl_admin_toolbar_array as $toolbar_page) {
+	foreach ($vosl_admin_toolbar_array as $toolbar_page) {
 		$admin_bar->add_menu($toolbar_page);
 	}
 	
 } 
 
 /*-----------------------------------------------*/
-### Loading VOSL Variables ###
-$vosl_vars=vosl_data('sl_vars');
+### Loading SL Variables ###
+$vosl_vars=vosl_data('vosl_vars');
 
 if (!is_array($vosl_vars)) {
 	//print($vosl_vars."<br><br>");

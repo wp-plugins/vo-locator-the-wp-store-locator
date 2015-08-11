@@ -10,9 +10,6 @@ Simple wordpress store locator plugin to manage multiple business locations and 
 == Description ==
 VO Locator is simple location management plugin to power your wordpress website with unlimited locations which enable users to find stores, classes locations, events places, jobs availability places. Setup your locations within few minutes with this powerful VO Locator plugin, built in responsive layout, no need to customize map views for various devices. VO Loctator plugin supports shortcode, now display your store listings with one single line of code.
 
-= Fixes in Version 1.0.1 =
-* Bug Fixs: A bug fixed where user can't activate the plugin due to a fatal error.
-
 = Visit our website for more information =
 [WP Store Locator](http://www.vitalorganizer.com/vo-locator-wordpress-store-locator-plugin/) | [Demo](http://www.vitalorganizer.com/vo-locator-demo/) | [Documentation](http://www.vitalorganizer.com/vo-locator-documentation/) | [Win VO Locator Pro](http://www.vitalorganizer.com/vo-locator-documentation/)
 
@@ -41,6 +38,9 @@ In any case if you need to add listing within theme template files, add this lin
 Or One can even use the line of code mentioned below instead of the above function
 
 `<?php echo do_shortcode( '[VO-LOCATOR]' ); ?>`
+
+= Fixes in Version 1.0.1 =
+* Bug Fixs: A bug fixed where user can't activate the plugin due to a fatal error.
 
 == Installation ==
 = Plugin =

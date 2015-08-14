@@ -3,11 +3,11 @@
 Plugin Name: VO Locator
 Plugin URI: http://www.vitalorganizer.com/vo-locator-wordpress-store-locator-plugin/
 Description: Simple wordpress store locator plugin to manage multiple business locations and other any places using Google Maps. Manage a few or thousands of locations effortlessly with setup in minutes.
-Version: 1.0.1
+Version: 1.0.2
 Author: Jurski
 Author URI: http://www.vitalorganizer.com
 */
-$vosl_version="1.0.1";
+$vosl_version="1.0.2";
 define('VOSL_VERSION', $vosl_version);
 $vosl_db_version=1.0;
 include_once("vosl-define.php");

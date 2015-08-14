@@ -41,13 +41,15 @@ if ( !is_user_logged_in() ) {
 			$old_address=$wpdb->get_results($sql, ARRAY_A); 
 		}
 		
-		$wpdb->query($wpdb->prepare("UPDATE ".VOSL_TABLE." SET ".str_replace("%", "%%", $field_value_str)." WHERE id=%d", (int)$_GET['edit'])) or die(mysql_error());  //Thank you WP user @kostofffan; fixes 'empty query' bug when user is trying to update location with a '%' sign in it
+		$wpdb->query($wpdb->prepare("UPDATE ".VOSL_TABLE." SET ".str_replace("%", "%%", $field_value_str)." WHERE id=%d", (int)$_GET['edit']));  
 		
 		if ((empty($_POST['longitude']) || $_POST['longitude']==$old_address[0]['longitude']) && (empty($_POST['latitude']) || $_POST['latitude']==$old_address[0]['latitude'])) {
 			if ($the_address!=$old_address[0]['address']." ".$old_address[0]['address2'].", ".$old_address[0]['city'].", ".$old_address[0]['state']." ".$old_address[0]['zip'] || ($old_address[0]['latitude']==="" || $old_address[0]['longitude']==="")) {
+				
 				vosl_do_geocoding($the_address,$_GET['edit']);
 			}
 		}
+		
 		print "<script>location.replace('".str_replace("&edit=$_GET[edit]", "", $_SERVER['REQUEST_URI'])."');</script>";
 	}
 	

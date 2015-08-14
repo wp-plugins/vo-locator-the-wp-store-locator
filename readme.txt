@@ -2,8 +2,8 @@
 Contributors: Jurski
 Tags: business locations, store locator, mapping,google maps, locator, shop locator, class locator, events locators, jobs locators, shop finder, shortcode, location finder, places, zipcode locator, stores, plugin, maps, coordinates, latitude, longitude, posts, best google maps, geocoding, shops, page, zipcode, zip code, zip code search, custom google maps, store finder, address map, google map, address location map, map maker, proximity search, map creator, gmaps, mapping software, google map plugin, map tools, google maps, zip code locator, mapping tools, locator maps, map of addresses, map multiple locations, wordpress locator, zipcode search, store locator map
 Requires at least: 3.3
-Tested up to: 4.2.2
-Stable tag: 1.0.1
+Tested up to: 4.2.4
+Stable tag: 1.0.2
 
 Simple wordpress store locator plugin to manage multiple business locations and other any places using Google Maps
 
@@ -39,8 +39,11 @@ Or One can even use the line of code mentioned below instead of the above functi
 
 `<?php echo do_shortcode( '[VO-LOCATOR]' ); ?>`
 
+= Fixes in Version 1.0.2 =
+* Bug Fixes: Fixed a bug where users see white blank screen on add listing.
+
 = Fixes in Version 1.0.1 =
-* Bug Fixs: A bug fixed where user can't activate the plugin due to a fatal error.
+* Bug Fixes: A bug fixed where user can't activate the plugin due to a fatal error.
 
 == Installation ==
 = Plugin =
@@ -77,6 +80,9 @@ Or One can even use the line of code mentioned below instead of the above functi
 *Or One can even use the line of code mentioned below instead of the above function `<?php echo do_shortcode( '[VO-LOCATOR]' ); ?>`
 
 == changelog ==
+= 1.0.2 =
+* Bug Fixes: Fixed a bug where users see white blank screen on add listing.
+
 = 1.0.1 =
 * Bug Fixs: A bug fixed where user can't activate the plugin due to a fatal error.
 
